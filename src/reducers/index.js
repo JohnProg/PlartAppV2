@@ -1,6 +1,12 @@
 import combineReducers from './combineReducers';
-import user from './user';
+import app from './app';
+import auth from './auth';
+import me from './me';
+import profession from './profession';
 
 export default combineReducers({
-  user,
+  app,
+  auth,
+  me,
+  profession,
 });

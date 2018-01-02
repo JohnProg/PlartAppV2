@@ -1,0 +1,35 @@
+{
+  // Use IntelliSense to learn about possible Node.js debug attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+      {   
+          "name": "Run Server",
+          "type": "node",
+          "request": "launch",
+          "program": "${workspaceRoot}/api-mock/server.js",
+          "stopOnEntry": false,
+          "args": [],
+          "cwd": "${workspaceRoot}",
+          "env": { "NODE_ENV": "production"}
+      },
+      {
+          "type": "node",
+          "request": "attach",
+          "name": "Attach to Process",
+          "port": 5858
+      },
+      {   
+          "name": "Debug Mocha Test",
+          "type": "node",
+          "request": "launch",
+          "program": "${workspaceRoot}/api-mock/node_modules/mocha/bin/mocha",
+          "port": 5858,
+          "stopOnEntry": false,
+          "args": ["--recursive", "--debug-brk", "test"],
+          "cwd": "${workspaceRoot}",
+          "env": { "NODE_ENV": "production"}
+      }
+  ]
+}

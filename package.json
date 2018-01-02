@@ -7,16 +7,19 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios --simulator 'iPhone 6'",
     "lint": "eslint --fix *.js",
-    "test": "jest"
+    "test": "jest",
+    "api": "json-server api-mock/db.json --port 5000 --middlewares mock-api/login-middleware.js --watch"
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "moment": "^2.19.3",
+    "moment": "^2.20.1",
     "prop-types": "^15.6.0",
     "react": "16.0.0",
-    "react-native": "0.51.0",
+    "react-native": "0.50.4",
     "react-native-animatable": "^1.2.4",
-    "react-native-app-intro": "https://github.com/merryjs/react-native-app-intro",
+    "react-native-app-intro-slider": "^0.2.2",
+    "react-native-form-generator": "MichaelCereda/react-native-form-generator#124/head",
+    "react-native-image-picker": "^0.26.7",
     "react-native-navigation": "^1.1.302",
     "react-native-vector-icons": "^4.4.3",
     "react-redux": "^5.0.6",
@@ -37,6 +40,7 @@
     "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-react-native": "^3.2.0",
     "jest": "21.2.1",
+    "json-server": "^0.12.1",
     "react-test-renderer": "16.0.0"
   },
   "jest": {

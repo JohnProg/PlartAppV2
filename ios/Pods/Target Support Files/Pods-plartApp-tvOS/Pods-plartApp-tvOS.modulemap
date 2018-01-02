@@ -1,0 +1,6 @@
+framework module Pods_plartApp_tvOS {
+  umbrella header "Pods-plartApp-tvOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

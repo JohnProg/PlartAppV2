@@ -1,0 +1,19 @@
+{
+  "name": "api-mock",
+  "version": "1.0.0",
+  "description": "",
+  "main": "extraEndpoints.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "api": "json-server api-mock/db.json --port 5000 --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "json-server": "^0.12.1",
+    "morgan": "^1.9.0",
+    "socket.io": "^2.0.4"
+  }
+}

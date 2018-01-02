@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import { persistStore } from 'redux-persist';
 import promise from 'redux-promise-middleware';
 import rootReducer from './../reducers';
+import rootNavigator from './../app';
 
 const middlewares = [promise(), thunk];
 
@@ -21,7 +22,9 @@ const configureStore = () => {
     rootReducer,
     composer,
   );
-  const persistor = persistStore(store);
+  const persistor = persistStore(store, {}, () => {
+    rootNavigator.run();
+  });
 
   return { persistor, store };
 };

@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-import colors from './../utils/colors';
+import Colors from './../utils/Colors';
 
 export default ({ onPress, children, type = 1 }) => (
   <TouchableOpacity
     activeOpacity={0.9}
     onPress={() => onPress()}
-    style={[styles.button, { backgroundColor: type == 1 ? 'white' : colors.purple }]}>
-    <Text style={[styles.buttonText, { color: type == 1 ? '#111' : 'white' }]}>{children}</Text>
+    style={[styles.button, { backgroundColor: type == 1 ? Colors.white : Colors.purple }]}>
+    <Text style={[styles.buttonText, { color: type == 1 ? '#111' : Colors.white }]}>{children}</Text>
   </TouchableOpacity>
 );
 

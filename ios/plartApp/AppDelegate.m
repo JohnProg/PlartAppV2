@@ -8,7 +8,7 @@
  */
 
 #import "AppDelegate.h"
-
+// #import "IQKeyboardManager.h"
 #import <React/RCTBundleURLProvider.h>
 // **********************************************
 // *** DON'T MISS: THE NEXT LINE IS IMPORTANT ***
@@ -31,7 +31,8 @@
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   self.window.backgroundColor = [UIColor whiteColor];
   [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
-  
+  // [[IQKeyboardManager sharedManager] setEnable: YES];
+  // [[IQKeyboardManager sharedManager] setKeyboardDistanceFromTextField: 50];
   return YES;
 }
 

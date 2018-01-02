@@ -1,0 +1,94 @@
+{
+  "professions": [
+    {
+      "id": 1,
+      "name": "Software",
+      "links": {
+        "self": "http://achambear.pe/api/professions/1/"
+      },
+      "photo": "https://cdn4.iconfinder.com/data/icons/flat-services-icons/128/consult.png",
+      "is_selected": false
+    },
+    {
+      "id": 2,
+      "name": "Enseñanza",
+      "links": {
+        "self": "http://achambear.pe/api/professions/2/"
+      },
+      "photo": "https://cdn4.iconfinder.com/data/icons/flat-services-icons/128/consult.png",
+      "is_selected": false
+    },
+    {
+      "id": 3,
+      "name": "Diseño",
+      "links": {
+        "self": "http://achambear.pe/api/professions/3/"
+      },
+      "photo": "https://cdn4.iconfinder.com/data/icons/flat-services-icons/128/consult.png",
+      "is_selected": false
+    },
+    {
+      "id": 4,
+      "name": "Transporte",
+      "links": {
+        "self": "http://achambear.pe/api/professions/4/"
+      },
+      "photo": "https://cdn4.iconfinder.com/data/icons/flat-services-icons/128/consult.png",
+      "is_selected": false
+    },
+    {
+      "id": 5,
+      "name": "Atencion al cliente",
+      "links": {
+        "self": "http://achambear.pe/api/professions/5/"
+      },
+      "photo": "https://cdn4.iconfinder.com/data/icons/flat-services-icons/128/consult.png",
+      "is_selected": false
+    },
+    {
+      "id": 6,
+      "name": "Ventas",
+      "links": {
+        "self": "http://achambear.pe/api/professions/6/"
+      },
+      "photo": "https://cdn4.iconfinder.com/data/icons/flat-services-icons/128/consult.png",
+      "is_selected": false
+    },
+    {
+      "id": 7,
+      "name": "Seguridad",
+      "links": {
+        "self": "http://achambear.pe/api/professions/7/"
+      },
+      "photo": "https://cdn4.iconfinder.com/data/icons/flat-services-icons/128/consult.png",
+      "is_selected": false
+    },
+    {
+      "id": 8,
+      "name": "Entretenimiento",
+      "links": {
+        "self": "http://achambear.pe/api/professions/8/"
+      },
+      "photo": "https://cdn4.iconfinder.com/data/icons/flat-services-icons/128/consult.png",
+      "is_selected": false
+    },
+    {
+      "id": 9,
+      "name": "Construccion",
+      "links": {
+        "self": "http://achambear.pe/api/professions/9/"
+      },
+      "photo": "https://cdn4.iconfinder.com/data/icons/flat-services-icons/128/consult.png",
+      "is_selected": false
+    },
+    {
+      "id": 10,
+      "name": "Reparacion",
+      "links": {
+        "self": "http://achambear.pe/api/professions/10/"
+      },
+      "photo": "https://cdn4.iconfinder.com/data/icons/flat-services-icons/128/consult.png",
+      "is_selected": false
+    }
+  ]
+}
