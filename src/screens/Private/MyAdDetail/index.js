@@ -1,33 +1,22 @@
-'use strict';
-
-import React, { Component } from 'react';
-import { BackAndroid, Dimensions, Image, StyleSheet, ScrollView, Text, TouchableHighlight, View } from 'react-native';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Dimensions, Image, ScrollView, Text, TouchableHighlight, View } from 'react-native';
 
 // 3rd Party Libraries
 import Moment from 'moment';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-// Components
-import Header from './../../Components/Header';
-
-// Pages
-import PublicProfilePage from './../Account/PublicProfilePage';
+import styles from './styles';
 
 const { width } = Dimensions.get('window');
 
-const MyAnnouncementDetailPage = ({ item, navigator }) => (
-  <View style={{ flex: 1, backgroundColor: '#673AB7', }}>
-    <Header
-      title={item.name}
-      leftText={<Icon name='angle-left' size={30} />}
-      onLeftPress={() => navigator.pop()}
-    />
+const MyAdDetailScreen = ({ item }) => (
+  <View style={styles.mainContainer}>
     <ScrollView>
       <View style={styles.cell_container}>
         <View style={{ flexDirection: 'row', marginBottom: 10 }}>
           <Image
             style={{ width, height: 200, margin: 2, flex: 1 }}
-            source={item.photo ? { uri: item.photo } : require('./../../Images/adDefaultImage.jpg')}
+            source={item.photo ? { uri: item.photo.replace('http', 'https') } : require('./../../../img/adDefaultImage.jpg')}
           />
         </View>
         <Text style={{ color: '#1a1917', fontSize: 14, fontWeight: 'bold', letterSpacing: 0.5, marginBottom: 2 }} numberOfLines={1}>{item.name.toUpperCase()}</Text>
@@ -37,11 +26,11 @@ const MyAnnouncementDetailPage = ({ item, navigator }) => (
         <Text style={{ marginTop: 20, marginBottom: 5 }}>Postulantes:  </Text>
         <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
           {
-          item.users.length > 0 && item.users.map((user, i) => {
+          item.users.length === 0 ? <Text>No hay postulantes.</Text> : item.users.map((user, i) => {
             return <TouchableHighlight style={{ width: 59, height: 59, margin: 2 }} key={i} onPress={
               () => {
                 navigator.push({
-                  component: PublicProfilePage,
+                  screen: 'plartApp.Login',
                   passProps: {
                     user,
                   }
@@ -51,27 +40,27 @@ const MyAnnouncementDetailPage = ({ item, navigator }) => (
             >
             <Image
               style={{ width: 59, height: 59, margin: 2 }}
-              source={user.photo ? { uri: user.photo } : require('./../../Images/adDefaultImage.jpg')}
+              source={user.photo ? { uri: user.photo.replace('http', 'https') } : require('./../../../img/adDefaultImage.jpg')}
             />
             </TouchableHighlight>
-            
           })
         }
         </View>
       </View>
     </ScrollView>
-
   </View>
-)
+);
 
-export default MyAnnouncementDetailPage;
+MyAdDetailScreen.propTypes = {
+  hasInternet: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  item: PropTypes.shape({}).isRequired,
+  isFetching: PropTypes.bool.isRequired,
+};
 
-const styles = StyleSheet.create({
-  cell_container: {
-    flex: 1,
-    backgroundColor: 'white',
-    padding: 10,
-    marginHorizontal: 20,
-    marginVertical: 15,
-  },
-});
+export default connect(({ app, ad }) => ({
+  hasInternet: app.hasInternet,
+  item: ad.item,
+  isFetching: ad.isFetching,
+  errors: ad.errors,
+}))(MyAdDetailScreen);

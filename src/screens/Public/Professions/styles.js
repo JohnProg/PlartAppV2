@@ -1,54 +1,54 @@
 import { Dimensions, StyleSheet } from 'react-native';
+import Colors from '../../../utils/Colors';
 
-const height = Dimensions.get('window').height;
+const { height } = Dimensions.get('window');
 const circleSize = height / 8;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1, 
-    backgroundColor: '#fff',
+    flex: 1,
+    backgroundColor: Colors.white,
   },
   container: {
-    flex:1, 
+    flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 20,
-    backgroundColor: 'white',
   },
   title: {
-    color: '#5d5d5d',
+    color: Colors.black,
     fontSize: 20,
     textAlign: 'center',
   },
-  featureContainer: {
+  professionContainer: {
     marginTop: 20,
     justifyContent: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  featureOverlay: {
+  professionOverlay: {
     justifyContent: 'center',
     height: circleSize,
     width: circleSize,
-    backgroundColor: 'rgba(80,94,104,0.7)',
+    backgroundColor: Colors.semiTransparent,
     borderRadius: circleSize / 2,
   },
-  feature: {
+  profession: {
     height: circleSize,
     margin: 10,
     width: circleSize,
   },
-  featureImage: {
+  professionImage: {
     height: circleSize,
     width: circleSize,
   },
-  featureText: {
-    color: '#fff',
+  professionText: {
+    color: Colors.white,
     marginHorizontal: 5,
     fontSize: 13,
     textAlign: 'center',
   },
   professionSelected: {
-    backgroundColor: 'rgba(80,94,104,0)',
+    backgroundColor: Colors.semiTransparent2,
   },
 });
 

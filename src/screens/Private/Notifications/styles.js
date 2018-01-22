@@ -1,17 +1,13 @@
 import { StyleSheet } from 'react-native';
-import Colors from './../utils/Colors';
+import Colors from './../../../utils/Colors';
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    justifyContent: 'center',
     backgroundColor: Colors.purple,
   },
-  introScreenScroll: {
-    alignItems: 'center',
-  },
   container: {
-    flex: 1,
-    justifyContent: 'center',
     paddingHorizontal: 40,
     backgroundColor: Colors.purple,
   },

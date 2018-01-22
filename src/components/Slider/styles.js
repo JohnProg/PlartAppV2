@@ -1,5 +1,5 @@
 import { Dimensions, Platform, StyleSheet } from 'react-native';
-
+import Colors from './../../utils/Colors';
 const { width: viewportWidth } = Dimensions.get('window');
 
 function wp (percentage) {
@@ -17,7 +17,7 @@ let height = 150;
 const styles = StyleSheet.create({
   buttonTextCard: {
     fontSize: 16,
-    color: 'white',
+    color: Colors.white,
   },
   buttonCard: {
     flex: 0.5,
@@ -25,23 +25,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     marginTop: 10,
-    borderColor: '#673AB7',
+    borderColor: Colors.purple,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   buttonCardType1: {
-    backgroundColor: '#673AB7',
-    marginLeft: 5
+    backgroundColor: Colors.purple,
+    marginLeft: 5,
   },
   buttonCardType2: {
-    backgroundColor: 'white',
-    marginRight: 5
+    backgroundColor: Colors.white,
+    marginRight: 5,
   },
   banner: {
-    height: height,
+    height,
   },
   overlayBanner: {
-    position: "absolute",
+    position: 'absolute',
     height: height,
     width: viewportWidth - 40,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -51,17 +51,17 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: 60,
     height: 60,
-    position: "absolute",
+    position: 'absolute',
     top: 30,
-    left: 40
+    left: 40,
   },
   companyName: {
-    position: "absolute",
+    position: 'absolute',
     top: 47,
     left: 110,
     padding: 2,
-    color: '#fff',
-    backgroundColor: 'transparent'
+    color: Colors.white,
+    backgroundColor: 'transparent',
   },
   image: {
       ...StyleSheet.absoluteFillObject,
@@ -70,12 +70,8 @@ const styles = StyleSheet.create({
       borderTopLeftRadius: 6,
       borderTopRightRadius: 6,
       borderBottomLeftRadius: 0,
-      borderBottomRightRadius: 0
+      borderBottomRightRadius: 0,
   },
-  slide: {
-      width: itemWidth,
-      paddingHorizontal: itemHorizontalMargin,
-  }
 });
 
 module.exports = styles;

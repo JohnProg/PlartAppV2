@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Alert, ScrollView, TextInput, View } from 'react-native';
+import { Alert, TextInput, View } from 'react-native';
 import * as actions from './../../../actions/authActions';
 // Components
 import Button from '../../../components/Button';
@@ -31,16 +31,23 @@ class RegisterScreen extends Component {
       email, username, password, device_key,
     } = this.state;
 
-    const { errors, navigator } = this.props;
+    const {
+      dispatch, hasInternet, navigator,
+    } = this.props;
+    if (!hasInternet) {
+      Alert.alert('Aviso', 'Necesitas internet para ir al siguiente paso.');
+      return;
+    }
     try {
-      await this.props.dispatch(actions.register({
+      await dispatch(actions.register({
         email, username, password, device_key,
       }));
       navigator.resetTo({ screen: 'plartApp.Professions' });
-    } catch (error) {
+    } catch (_) {
       setTimeout(() => {
-        Alert.alert('Error', Helpers.formatError(errors));
-      }, 100);
+        const { errors } = this.props;
+        Alert.alert('Error', errors);
+      }, 1000);
     }
   }
 
@@ -60,6 +67,7 @@ class RegisterScreen extends Component {
             style={styles.textField}
             onChangeText={text => this.setState({ username: text })}
             value={this.state.username}
+            underlineColorAndroid="transparent"
             placeholder="Usuario"
             clearButtonMode="always"
             autoCorrect={false}
@@ -74,6 +82,7 @@ class RegisterScreen extends Component {
             onChangeText={text => this.setState({ email: text })}
             value={this.state.email}
             keyboardType="email-address"
+            underlineColorAndroid="transparent"
             placeholder="Correo electrónico"
             clearButtonMode="always"
             autoCorrect={false}
@@ -88,6 +97,7 @@ class RegisterScreen extends Component {
             onChangeText={text => this.setState({ password: text })}
             value={this.state.password}
             secureTextEntry={secureTextEntry}
+            underlineColorAndroid="transparent"
             placeholder="Contraseña"
             clearButtonMode="always"
             autoCorrect={false}
@@ -108,8 +118,8 @@ RegisterScreen.propTypes = {
   isFetching: PropTypes.bool.isRequired,
 };
 
-export default connect(({ auth }) => ({
-  token: auth.token,
+export default connect(({ app, auth }) => ({
+  hasInternet: app.hasInternet,
   isFetching: auth.isFetching,
   errors: auth.errors,
 }))(RegisterScreen);

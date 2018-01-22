@@ -36,14 +36,14 @@ const slides = [
   },
 ];
 
-const TutorialScreen = ({ navigator, dispatch }) => {
+const Tutorial = ({ navigator, dispatch }) => {
   const goToHome = () => {
     dispatch(actions.updateTutorialStatus());
     navigator.resetTo({ screen: 'plartApp.Intro', title: 'Inicio' });
   };
   const renderItem = ({ backgroundColor, icon, title, text }) => (
     <View
-      style={[styles.mainContent, {
+      style={[styles.mainContainer, {
         backgroundColor,
       }]}
     >
@@ -70,12 +70,12 @@ const TutorialScreen = ({ navigator, dispatch }) => {
   );
 };
 
-TutorialScreen.propTypes = {
+Tutorial.propTypes = {
   navigator: PropTypes.shape({
     resetTo: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-TutorialScreen.navigatorStyle = { navBarHidden: true };
-export default connect()(TutorialScreen);
+Tutorial.navigatorStyle = { navBarHidden: true };
+export default connect()(Tutorial);
 

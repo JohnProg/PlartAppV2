@@ -1,8 +1,3 @@
-/**
- * POST /login
- * Sign in using username and password.
- */
-
 const saveSelectedProfessions = (req, res) => {
   res.status(200).json({ success: true });
 };

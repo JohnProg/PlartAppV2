@@ -20,7 +20,7 @@ const IntroScreen = ({ navigator }) => {
   };
   return (
     <View style={styles.mainContainer}>
-      <ScrollView contentContainerStyle={[styles.container, styles.introScreenScroll]}>
+      <ScrollView contentContainerStyle={styles.introScreenScroll}>
         <H1>Achambear</H1>
         <Icon name="md-people" size={200} color={Colors.white} />
         <Button onPress={() => goTo('plartApp.Register', 'Crear cuenta')}>Registrarse</Button>

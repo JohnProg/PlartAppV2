@@ -7,13 +7,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.purple,
   },
   introScreenScroll: {
-    alignItems: 'center',
-  },
-  container: {
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 40,
     backgroundColor: Colors.purple,
+    alignItems: 'center',
   },
   textField: {
     height: 40,

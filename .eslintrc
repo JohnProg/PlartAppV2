@@ -6,7 +6,7 @@
     "node": true
   },
   "plugins": ["react", "jsx-a11y", "import", "react-native"],
-  "extends": ["airbnb", "plugin:react-native/all"],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "airbnb", "plugin:react-native/all"],
   "rules": {
     "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }],
     "no-return-assign": 0

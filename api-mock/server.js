@@ -1,9 +1,11 @@
+const morgan = require('morgan');
 const {
   bodyParser, create, defaults, router, rewriter,
 } = require('json-server');
-const morgan = require('morgan');
-const socket = require('socket.io');
-const app = require('http').createServer(create());
+
+const expressServer = create();
+const server = require('http').Server(expressServer);
+const io = require('socket.io')(server);
 const {
   loginUser,
   registerUser,
@@ -12,29 +14,27 @@ const {
 const { saveSelectedProfessions, savePersonalInformation } = require('./common');
 const { ip, port } = require('./config');
 
-const io = socket(app);
-const server = create();
 const apiEndpoints = router('db.json');
 // Should be false on production
 const middlewares = defaults({ logger: true });
 
 // Own logging format
-server.use(morgan('combined', { colors: true }));
-server.use(bodyParser);
-server.use(middlewares);
+expressServer.use(morgan('combined', { colors: true }));
+expressServer.use(bodyParser);
+expressServer.use(middlewares);
 
-server.use(rewriter({
+expressServer.use(rewriter({
   '/api/*': '/$1',
 }));
 
 // Custom routes before JSON Server router
-server.post('/login', loginUser);
-server.post('/user/', registerUser);
-server.post('/api-token-verify/', verifyToken);
-server.put('/me/step_1/', saveSelectedProfessions);
-server.put('/me/step_2/', savePersonalInformation);
+expressServer.post('/login', loginUser);
+expressServer.post('/user/', registerUser);
+expressServer.post('/api-token-verify/', verifyToken);
+expressServer.put('/me/step_1/', saveSelectedProfessions);
+expressServer.put('/me/step_2/', savePersonalInformation);
 
-server.use(apiEndpoints);
+expressServer.use(apiEndpoints);
 
 io.on('connection', (client) => {
   console.log('client connected', client.id);
@@ -44,10 +44,6 @@ io.on('connection', (client) => {
   client.on('getNotifications', (data) => {
     io.emit('newHotDeals', data);
   });
-});
-
-app.listen(3001, ip, () => {
-  console.log(`Socket on http://${ip}:3001/`);
 });
 
 server.listen(port, ip, () => {

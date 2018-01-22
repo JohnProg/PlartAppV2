@@ -18,8 +18,8 @@ function userReducer(state = initialState, action) {
         isFetching: true,
       };
     case `${types.SAVE_PERSONAL_INFO}_REJECTED`: {
-      const errors = !action.payload.response ?
-        action.payload.message : action.payload.response.data;
+      const errors = action.payload.response ?
+        action.payload.response.data : action.payload.message;
       return {
         ...state,
         isFetching: false,
@@ -30,6 +30,11 @@ function userReducer(state = initialState, action) {
       return {
         ...state,
         isFetching: false,
+      };
+    case types.SET_CURRENT_COVER_PROFILE:
+      return {
+        ...state,
+        currentUser: { ...state.currentUser, photo: action.avatarUrl },
       };
     default: return state;
   }

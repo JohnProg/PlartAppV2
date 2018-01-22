@@ -1,10 +1,10 @@
 import * as types from './../constants/actionTypes';
+import { setItem } from './../utils/Storage';
 
 const initialState = {
   isFetching: false,
-  loginedIn: false,
+  loggedIn: false,
   token: null,
-  currentUser: null,
   errors: {},
   steps: {},
 };
@@ -15,7 +15,7 @@ export default function auth(state = initialState, action) {
       if (action.token) {
         return {
           ...state,
-          loginedIn: true,
+          loggedIn: true,
           token: action.token,
         };
       }
@@ -29,42 +29,61 @@ export default function auth(state = initialState, action) {
         ...state,
         isFetching: true,
       };
-    case `${types.LOGIN}_FULFILLED`:
+    case `${types.LOGIN}_REJECTED`:
       return {
         ...state,
         isFetching: false,
-        loginedIn: true,
-        token: action.payload.data.token,
       };
+    case `${types.LOGIN}_FULFILLED`: {
+      const { token } = action.payload.data;
+      setItem('token', token);
+      return {
+        ...state,
+        isFetching: false,
+        loggedIn: true,
+        token,
+      };
+    }
     case `${types.REGISTER}_PENDING`:
       return {
         ...state,
         isFetching: true,
       };
     case `${types.REGISTER}_REJECTED`: {
-      const errors = !action.payload.response ?
-        action.payload.message : action.payload.response.data;
+      const errors = action.payload.response ?
+        action.payload.response.data : action.payload.message;
       return {
         ...state,
         isFetching: false,
         errors,
       };
     }
-    case `${types.REGISTER}_FULFILLED`:
+    case `${types.REGISTER}_FULFILLED`: {
+      const { token } = action.payload.data;
+      setItem('token', token);
       return {
         ...state,
         isFetching: false,
-        loginedIn: true,
-        token: action.payload.data.token,
+        loggedIn: true,
+        token,
       };
-
+    }
     case `${types.VERFY_TOKEN}_FULFILLED`:
       return {
         ...state,
         steps: action.payload.data,
       };
-
-    case types.LOGOUT: {
+    case types.STEP_1_COMPLETED:
+      return {
+        ...state,
+        steps: { ...state.steps, step_1: true },
+      };
+    case types.STEP_2_COMPLETED:
+      return {
+        ...state,
+        steps: { ...state.steps, step_2: true },
+      };
+    case types.LOG_OUT: {
       return initialState;
     }
     default:

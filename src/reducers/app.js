@@ -1,7 +1,7 @@
 import * as types from './../constants/actionTypes';
 
 const initialState = {
-  online: false,
+  hasInternet: true,
   appState: null,
   tutorialCompleted: false,
 };
@@ -9,7 +9,7 @@ const initialState = {
 export default function app(state = initialState, action) {
   switch (action.type) {
     case types.CHANGE_NET_STATUS:
-      return { ...state, online: action.payload };
+      return { ...state, hasInternet: action.payload };
     case types.CHANGE_APP_STATE:
       return { ...state, appState: action.payload };
     case types.CHANGE_TUTORIAL_STATE:

@@ -47,8 +47,8 @@ export default function auth(state = initialState, action) {
         isUpdating: true,
       };
     case `${types.SAVE_SELECTED_PROFESSIONS}_REJECTED`: {
-      const errors = !action.payload.response ?
-        action.payload.message : action.payload.response.data;
+      const errors = action.payload.response ?
+        action.payload.response.data : action.payload.message;
       return {
         ...state,
         isUpdating: false,

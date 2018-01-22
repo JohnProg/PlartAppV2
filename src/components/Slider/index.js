@@ -1,6 +1,4 @@
-'use strict';
-
-import React, { Component } from 'react';
+import React from 'react';
 import { Dimensions, Image, Text, TouchableOpacity, View } from 'react-native';
 
 // 3rd Party Libraries
@@ -8,65 +6,53 @@ import Moment from 'moment';
 import Carousel from 'react-native-snap-carousel';
 
 // Utils
-import helpers from './../Utils/helpers'
-import styles from '../Styles/announcement.style.js';
+import styles from './styles';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
-function wp(percentage) {
+function wp (percentage) {
   const value = (percentage * viewportWidth) / 100;
   return Math.round(value);
 }
 
-const slideHeight = (viewportHeight / 1.4);
+const slideHeight = viewportHeight * 0.7;
 const slideWidth = wp(75);
+const itemHorizontalMargin = wp(2);
 
 export const sliderWidth = viewportWidth;
-export const itemHorizontalMargin = wp(2);
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 
-const Slider = ({ firstItem, items, updateAnnouncements }) => {
-  const getSlides = (entries) => {
-    if (!entries) {
-      return false;
-    }
-
-    return entries.map((entry, index) => {
-      return (
-        <Announcement
-          {...entry}
-          key={index}
-          updateAnnouncements={updateAnnouncements}
-        />
-      );
-    });
-  }
+const Slider = ({ items, updateAnnouncements }) => {
+  const renderItem = ({ item }) => (
+    <Announcement
+      {...item}
+      key={item.id}
+      updateAnnouncements={updateAnnouncements}
+    />
+  );
   return (
     <Carousel
-      inactiveSlideScale={0.94}
-      inactiveSlideOpacity={0.6}
-      enableMomentum={false}
+      data={items}
+      renderItem={renderItem}
       sliderWidth={sliderWidth}
       itemWidth={itemWidth}
-      slideStyle={styles.slide}
-      showsHorizontalScrollIndicator={false}
-      snapOnAndroid={true}
+      inactiveSlideScale={0.94}
+      inactiveSlideOpacity={0.7}
+      enableMomentum={false}
       removeClippedSubviews={false}
-    >
-      {getSlides(items)}
-    </Carousel>
+    />
   );
-}
+};
 
 const Announcement = ({ id, name, budget, currency, date_finish, description, links, photo, company_logo, updateAnnouncements }) => {
   const urlApply = links.apply;
   const urlReject = links.remove_apply;
   const dateToFinish = Moment(date_finish).format('YYYY-MM-DD');
-  const imageUrl = photo ? { uri: photo } : require('./../Images/adDefaultImage.jpg');
+  const imageUrl = photo ? { uri: photo.replace('http', 'https') } : require('./../../img/adDefaultImage.jpg');
   return (
     <TouchableOpacity
       activeOpacity={0.9}
-      style={{ height: slideHeight }}>
+      style={{ height: slideHeight, width: itemWidth }}>
       <View style={{ flex: 1, backgroundColor: '#888888', overflow: 'hidden', borderBottomLeftRadius: 0, borderBottomRightRadius: 0, borderTopLeftRadius: 6, borderTopRightRadius: 6 }}>
         <Image source={imageUrl} style={styles.image} />
       </View>
@@ -81,19 +67,21 @@ const Announcement = ({ id, name, budget, currency, date_finish, description, li
           <TouchableOpacity
             style={[styles.buttonCard, styles.buttonCardType2]}
             onPress={() => updateAnnouncements(urlReject, id, 'reject')}
-            underlayColor="white">
+            underlayColor="white"
+          >
             <Text style={[styles.buttonTextCard, { color: '#673AB7' }]}>Rechazar</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => updateAnnouncements(urlApply, id, 'apply')}
             style={[styles.buttonCard, styles.buttonCardType1]}
-            underlayColor="white">
+            underlayColor="white"
+          >
             <Text style={styles.buttonTextCard}>Aceptar</Text>
           </TouchableOpacity>
         </View>
       </View>
     </TouchableOpacity>
   );
-}
+};
 
 export default Slider;

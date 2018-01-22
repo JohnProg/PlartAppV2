@@ -35,7 +35,7 @@ const registerUser = (req, res) => {
   return res.status(200).json({ token: Date.now() });
 };
 
-const verifyToken = (req, res) => res.status(200).json({ step_1: false, step_2: false });
+const verifyToken = (req, res) => res.status(200).json({ step_1: true, step_2: false });
 
 exports.loginUser = loginUser;
 exports.registerUser = registerUser;

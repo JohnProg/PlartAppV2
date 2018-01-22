@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Alert, ScrollView, TextInput, View } from 'react-native';
+import { Alert, TextInput, View } from 'react-native';
 import * as actions from './../../../actions/authActions';
+import rootNavigator from './../../../app';
 // Components
 import Button from '../../../components/Button';
 import H1 from '../../../components/H1';
@@ -32,15 +33,21 @@ class LoginScreen extends Component {
 
   login = async () => {
     const { email: username, password, device_key } = this.state;
-    const { navigator } = this.props;
+    const { dispatch, hasInternet } = this.props;
+
+    if (!hasInternet) {
+      Alert.alert('Aviso', 'Necesitas internet para ir al siguiente paso.');
+      return;
+    }
     try {
-      await this.props.dispatch(actions.login({
+      await dispatch(actions.logIn({
         username, password, device_key,
       }));
-      navigator.resetTo({ screen: '' });
-    } catch (error) {
+      rootNavigator.startPrivateApp();
+    } catch (_) {
+      const { errors } = this.props;
       setTimeout(() => {
-        Alert.alert('Error', Helpers.formatError(error));
+        Alert.alert('Error', Helpers.formatError(errors));
       }, 100);
     }
   }
@@ -61,6 +68,7 @@ class LoginScreen extends Component {
             onChangeText={text => this.setState({ email: text })}
             value={this.state.email}
             keyboardType="email-address"
+            underlineColorAndroid="transparent"
             placeholder="Correo electrónico"
             clearButtonMode="always"
             autoCorrect={false}
@@ -74,6 +82,7 @@ class LoginScreen extends Component {
             style={styles.textField}
             onChangeText={text => this.setState({ password: text })}
             value={this.state.password}
+            underlineColorAndroid="transparent"
             secureTextEntry={secureTextEntry}
             placeholder="Contraseña"
             clearButtonMode="always"
@@ -95,6 +104,7 @@ LoginScreen.propTypes = {
   isFetching: PropTypes.bool.isRequired,
 };
 
-export default connect(({ auth }) => ({
+export default connect(({ app, auth }) => ({
+  hasInternet: app.hasInternet,
   isFetching: auth.isFetching,
 }))(LoginScreen);

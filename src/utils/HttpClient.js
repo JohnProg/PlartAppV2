@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://achambear-nxuzchipbm.now.sh/api/';
+const API_URL = 'https://achambear.pe/api/';
 GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest;
 
 // fetch logger
@@ -11,37 +11,33 @@ global.fetch = function (uri, options, ...args) {
     return response;
   });
 };
-const token = '123';
-const getHeaders = () => ({
-  Authorization: `JWT ${token}`,
-});
 
 export default class HttpClient {
   static get(dispatch, type, url) {
     return dispatch({
       type,
-      payload: axios.get(`${API_URL}${url}`, { headers: getHeaders() }),
+      payload: axios.get(`${API_URL}${url}`),
     });
   }
 
   static delete(dispatch, type, url) {
     return dispatch({
       type,
-      payload: axios.delete(`${API_URL}${url}`, { headers: getHeaders() }),
+      payload: axios.delete(`${API_URL}${url}`),
     });
   }
 
   static post(data, dispatch, type, url) {
     return dispatch({
       type,
-      payload: axios.post(`${API_URL}${url}`, data, { headers: getHeaders() }),
+      payload: axios.post(`${API_URL}${url}`, data),
     });
   }
 
   static put(data, dispatch, type, url) {
     return dispatch({
       type,
-      payload: axios.put(`${API_URL}${url}`, data, { headers: getHeaders() }),
+      payload: axios.put(`${API_URL}${url}`, data),
     });
   }
 }

@@ -2,10 +2,11 @@
   "name": "api-mock",
   "version": "1.0.0",
   "description": "",
-  "main": "extraEndpoints.js",
+  "main": "server.js",
   "scripts": {
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "api": "json-server api-mock/db.json --port 5000 --watch"
+    "api": "json-server db.json --port 5000 --watch"
   },
   "keywords": [],
   "author": "",

@@ -1,9 +1,7 @@
-'use strict';
-
-import MyAdCeil from  './MyAdCeil';
-import NotificationCeil from  './NotificationCeil';
+import MyAdCell from './MyAdCell';
+import NotificationCell from './NotificationCell';
 
 export {
-  MyAdCeil,
-  NotificationCeil,
-}
+  MyAdCell,
+  NotificationCell,
+};

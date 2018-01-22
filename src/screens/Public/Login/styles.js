@@ -7,9 +7,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.purple,
   },
-  introScreenScroll: {
-    alignItems: 'center',
-  },
   container: {
     paddingHorizontal: 40,
     backgroundColor: Colors.purple,

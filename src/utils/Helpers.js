@@ -18,14 +18,13 @@ export default {
   },
   formatError(errorObj) {
     let keys = '';
-    if (errorObj.message === 'Unexpected token < in JSON at position 0') {
-      return 'Ocurrió un error en el servidor, inténtalo de nuevo.';
-    }
-    for (let key in errorObj) {
-      const errors = errorObj[key];
-      for (let error in errors) {
-        keys += (`${key} : ${errors[error]} \n`);
+    if (errorObj) {
+      if (errorObj.message === 'Unexpected token < in JSON at position 0') {
+        return 'Ocurrió un error en el servidor, inténtalo de nuevo.';
       }
+      Object.keys(errorObj).forEach((key) => {
+        errorObj[key].forEach(error => (keys += (`${key} : ${error} \n`)));
+      });
     }
     return keys;
   },
@@ -33,6 +32,7 @@ export default {
     title: 'Cambiar foto de portada',
     sizeTitle: 16,
     mediaType: 'photo',
+    // quality: 0.3,
     takePhotoButtonTitle: 'Hacer foto...',
     chooseFromLibraryButtonTitle: 'Seleccionar foto...',
     cancelButtonTitle: 'Cancelar',
@@ -47,6 +47,7 @@ export default {
   },
   getFormats: {
     date: 'YYYY-MM-DD',
+    dateHuman: 'DD-MM-YYYY',
     datetime: 'YYYY-MM-DD HH:mm',
     time: 'HH:mm',
   },
