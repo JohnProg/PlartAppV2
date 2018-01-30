@@ -29,11 +29,15 @@ export default function auth(state = initialState, action) {
         ...state,
         isFetching: true,
       };
-    case `${types.LOGIN}_REJECTED`:
+    case `${types.LOGIN}_REJECTED`: {
+      const errors = action.payload.response ?
+        action.payload.response.data : action.payload.message;
       return {
         ...state,
         isFetching: false,
+        errors,
       };
+    }
     case `${types.LOGIN}_FULFILLED`: {
       const { token } = action.payload.data;
       setItem('token', token);

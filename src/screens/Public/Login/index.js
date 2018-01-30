@@ -31,6 +31,10 @@ class LoginScreen extends Component {
     this.inputs = {};
   }
 
+  onFocusNextField(key) {
+    this.inputs[key].focus();
+  }
+
   login = async () => {
     const { email: username, password, device_key } = this.state;
     const { dispatch, hasInternet } = this.props;
@@ -52,10 +56,6 @@ class LoginScreen extends Component {
     }
   }
 
-  focusNextField(key) {
-    this.inputs[key].focus();
-  }
-
   render() {
     const { isFetching } = this.props;
     return (
@@ -75,7 +75,7 @@ class LoginScreen extends Component {
             returnKeyType="next"
             enablesReturnKeyAutomatically={enablesReturnKeyAutomatically}
             autoCapitalize="none"
-            onSubmitEditing={() => this.focusNextField('password')}
+            onSubmitEditing={() => this.onFocusNextField('password')}
           />
           <TextInput
             ref={input => this.inputs.password = input}
@@ -107,4 +107,5 @@ LoginScreen.propTypes = {
 export default connect(({ app, auth }) => ({
   hasInternet: app.hasInternet,
   isFetching: auth.isFetching,
+  errors: auth.errors,
 }))(LoginScreen);

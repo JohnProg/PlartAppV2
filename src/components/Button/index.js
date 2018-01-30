@@ -9,7 +9,11 @@ const Button = props => (
   <TouchableOpacity
     activeOpacity={0.9}
     {...props}
-    style={[styles.button, { backgroundColor: props.type === 1 ? Colors.white : Colors.purple }]}
+    style={[
+      styles.button,
+      props.style,
+      { backgroundColor: props.type === 1 ? Colors.white : Colors.purple }
+    ]}
   >
     <Text
       style={[styles.buttonText, { color: props.type === 1 ? Colors.black : Colors.white }]}
@@ -23,10 +27,12 @@ const Button = props => (
 Button.propTypes = {
   children: PropTypes.string.isRequired,
   type: PropTypes.number,
+  style: PropTypes.number,
 };
 
 Button.defaultProps = {
   type: 1,
+  style: null,
 };
 
 export default Button;

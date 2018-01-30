@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 import Colors from './../../../utils/Colors';
 
@@ -28,19 +28,24 @@ const styles = StyleSheet.create({
     marginTop: 9,
     borderColor: Colors.gray,
     borderWidth: 1,
-    padding: 0,
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
-    height: 38,
     justifyContent: 'center',
     marginBottom: 20,
   },
   textField: {
-    fontSize: 14,
-    marginLeft: 10,
+    fontSize: 16,
+    paddingLeft: 10,
     color: Colors.black,
+    paddingVertical: Platform.OS === 'ios' ? 13.5 : 8,
+  },
+  buttonPickerStyle: {
+    minHeight: 44,
+  },
+  textButtonPickerStyle: {
+    paddingVertical: 0,
   },
   textEditAvatar: {
     fontSize: 16,

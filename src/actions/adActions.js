@@ -1,8 +1,12 @@
 import HttpClient from './../utils/HttpClient';
 import * as types from './../constants/actionTypes';
 
-export const getMyAdvertisements = () => dispatch => (
+export const getAdvertisements = () => dispatch => (
   HttpClient.get(dispatch, types.FETCH_ADS, 'advertisement/')
+);
+
+export const getMyAdvertisements = () => dispatch => (
+  HttpClient.get(dispatch, types.FETCH_MY_ADS, 'me/get_advertisement/')
 );
 
 export const setCurrentAd = item => ({
@@ -23,3 +27,8 @@ export const applyAd = () => dispatch => (
 export const declineAd = () => dispatch => (
   HttpClient.get(dispatch, types.FETCH_ADS, 'advertisement/')
 );
+
+export const createAd = data => dispatch => (
+  HttpClient.post(data, dispatch, types.CREATE_AD, 'advertisement/')
+);
+

@@ -1,6 +1,8 @@
+import { Platform } from 'react-native';
 import { Navigation } from 'react-native-navigation';
-import { Intro, Login, PersonalInfo, Professions, Register, Tutorial } from './Public';
-import { Ads, MyAds, MyAdDetail, Notifications, Profile } from './Private/';
+import { AboutUs, Intro, Login, PersonalInfo, Professions, Register, Tutorial } from './Public';
+import { CreateAd, ListAds, MyAds, MyAdDetail, Notifications, DetailProfile, EditProfile } from './Private/';
+import Notification from './../components/Notification';
 import { Drawer, Splash } from './Common';
 import { iconsLoaded, iconsMap } from './../utils/iconsMap';
 import Colors from './../utils/Colors';
@@ -20,6 +22,7 @@ export default class Application {
 
   configureScreens = (store, Provider) => {
     const screens = {
+      AboutUs,
       Intro,
       Login,
       PersonalInfo,
@@ -28,11 +31,14 @@ export default class Application {
       Splash,
       Register,
       Tutorial,
-      Ads,
+      CreateAd,
+      ListAds,
       MyAds,
       MyAdDetail,
       Notifications,
-      Profile,
+      Notification,
+      DetailProfile,
+      EditProfile,
     };
     Object.keys(screens).map(key => Navigation.registerComponent(`plartApp.${key}`, () => screens[key], store, Provider));
   }
@@ -67,11 +73,11 @@ export default class Application {
 
   startPrivateApp = () => {
     Navigation.startTabBasedApp({
-      // animationType: 'fade',
+      // animationType: Platform.OS === 'ios' ? 'slide-down' : 'fade',
       tabs: [
         {
-          label: 'Anuncios',
-          screen: 'plartApp.Ads',
+          label: Platform.OS === 'ios' ? 'Anuncios' : '',
+          screen: 'plartApp.ListAds',
           icon: iconsMap.announcement,
           title: 'Anuncios',
           navigatorButtons: {
@@ -84,15 +90,20 @@ export default class Application {
             ],
             rightButtons: [
               {
-                title: 'Acerca de Nosotros',
-                id: 'aboutUs',
-                icon: iconsMap.infoOutline,
+                title: 'Filtros',
+                id: 'filters',
+                icon: iconsMap.filters,
+              },
+              {
+                title: 'Search',
+                id: 'search',
+                icon: iconsMap.search,
               },
             ],
           },
         },
         {
-          label: 'Mis anuncios',
+          label: Platform.OS === 'ios' ? 'Mis anuncios' : '',
           screen: 'plartApp.MyAds',
           icon: iconsMap.cardTravel,
           title: 'Mis anuncios',
@@ -104,17 +115,10 @@ export default class Application {
                 icon: iconsMap.menu,
               },
             ],
-            rightButtons: [
-              {
-                title: 'Acerca de Nosotros',
-                id: 'aboutUs',
-                icon: iconsMap.infoOutline,
-              },
-            ],
           },
         },
         {
-          label: 'Mensajes',
+          label: Platform.OS === 'ios' ? 'Mensajes' : '',
           screen: 'plartApp.Notifications',
           icon: iconsMap.notifications,
           title: 'Mensajes',
@@ -126,18 +130,11 @@ export default class Application {
                 icon: iconsMap.menu,
               },
             ],
-            rightButtons: [
-              {
-                title: 'Acerca de Nosotros',
-                id: 'aboutUs',
-                icon: iconsMap.infoOutline,
-              },
-            ],
           },
         },
         {
-          label: 'Profile',
-          screen: 'plartApp.Profile',
+          label: Platform.OS === 'ios' ? 'Profile' : '',
+          screen: 'plartApp.DetailProfile',
           icon: iconsMap.personOutline,
           selectedIcon: iconsMap.personOutline,
           title: 'Profile',
@@ -147,7 +144,6 @@ export default class Application {
         tabBarButtonColor: Colors.gray,
         tabBarSelectedButtonColor: Colors.purple,
         tabBarBackgroundColor: Colors.white,
-        tabFontFamily: 'BioRhyme-Bold',
       },
       appStyle: {
         drawUnderTabBar: false,
@@ -157,7 +153,7 @@ export default class Application {
         tabFontFamily: 'BioRhyme-Bold',
         navBarButtonColor: Colors.black,
         navBarTextColor: Colors.black,
-        navigationBarColor: '#003a66',
+        navigationBarColor: Colors.black,
         navBarBackgroundColor: Colors.white,
         statusBarColor: Colors.purpleDark,
       },
@@ -165,6 +161,9 @@ export default class Application {
         left: {
           screen: 'plartApp.Drawer',
         },
+        type: 'MMDrawer',
+        animationType: 'slide',
+        disableOpenGesture: true,
       },
     });
   }

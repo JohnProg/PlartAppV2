@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Picker, Text, TouchableHighlight, View } from 'react-native';
+import { Modal, Picker, Text, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 
 class PickerModal extends Component {
@@ -9,22 +9,26 @@ class PickerModal extends Component {
     this.state = {
       open: false,
       items: [],
-      value: undefined,
+      value: null,
     };
   }
 
-  open = ({ items }) => {
-    this.setState({ items });
+  open = ({ items, value }) => {
+    this.setState({ items, value });
     this.showPickerModal();
   }
 
   handleCancel = () => (this.setState({ open: false }));
 
   handleOk = () => {
-    const { items, value } = this.state;
+    const { items } = this.state;
+    let { value } = this.state;
     this.handleCancel();
+    if (!value) {
+      value = items[0].id;
+    }
     if (this.props.onValuePicked) {
-      this.props.onValuePicked(items.find(item => item.value === value));
+      this.props.onValuePicked(items.find(item => (item.value || item.id) === value));
     }
   }
 
@@ -45,12 +49,12 @@ class PickerModal extends Component {
               {this.props.children}
             </Picker>
             <View style={styles.containerTwoGrid}>
-              <TouchableHighlight style={styles.containerItemTwoGrid} onPress={this.handleCancel}>
+              <TouchableOpacity style={styles.containerItemTwoGrid} onPress={this.handleCancel}>
                 <Text style={styles.buttonTextStyle}>{this.props.cancelLabel}</Text>
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.containerItemTwoGrid} onPress={this.handleOk}>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.containerItemTwoGrid} onPress={this.handleOk}>
                 <Text style={styles.buttonTextStyle}>{this.props.okLabel}</Text>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
           </View>
         </View>

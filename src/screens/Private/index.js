@@ -1,13 +1,15 @@
 import Notifications from './Notifications';
-import Profile from './Profile';
-import Ads from './Ads';
+import { DetailProfile, EditProfile } from './Profile';
+import { CreateAd, ListAds } from './Ads';
 import MyAds from './MyAds';
 import MyAdDetail from './MyAdDetail';
 
 export {
-  Ads,
+  CreateAd,
+  DetailProfile,
+  EditProfile,
+  ListAds,
   MyAds,
   MyAdDetail,
   Notifications,
-  Profile,
 };

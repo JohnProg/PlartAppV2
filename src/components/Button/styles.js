@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
     height: 45,
     justifyContent: 'center',
     alignSelf: 'stretch',
-    marginTop: 20,
     borderRadius: 8,
   },
 });

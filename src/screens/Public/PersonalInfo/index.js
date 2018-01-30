@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Alert, Image, PermissionsAndroid, Platform, Picker, ScrollView, Text, TextInput, TouchableHighlight, View } from 'react-native';
+import { Alert, Image, Picker, ScrollView, Text, TextInput, TouchableHighlight, View } from 'react-native';
 import Moment from 'moment';
-import ImagePicker from 'react-native-image-picker';
+import showImagePicker from './../../../components/ImagePicker';
 import * as actions from './../../../actions/meActions';
 import rootNavigator from './../../../app';
 import Button from './../../../components/Button';
@@ -38,6 +38,26 @@ class PersonalInfoScreen extends Component {
 
   onChange = (text, key) => (this.setState({ [key]: text }));
 
+  onFocusNextField(key) {
+    this.inputs[key].focus();
+  }
+
+  onShowImagePicker = () => {
+    const options = Helpers.getDefaultImagePicker;
+    options.title = 'Seleccionar foto';
+
+    showImagePicker(options, async (response) => {
+      if (!response.didCancel && !response.error) {
+        if (!this.props.hasInternet) {
+          Alert.alert('Necesitas internet subir esta imágen.');
+          return;
+        }
+        const avatar = { uri: `data:${response.type};base64,${response.data}` };
+        this.setState({ avatar });
+      }
+    });
+  }
+
   handleSubmit = async () => {
     const { dispatch, hasInternet } = this.props;
     const {
@@ -64,28 +84,15 @@ class PersonalInfoScreen extends Component {
       data.birthday = Moment(data.birthday).format(Helpers.getFormats.date);
     }
     if (avatar && avatar.uri) {
-      // data.profile_picture = avatar.uri;
+      data.profile_picture = avatar.uri;
     }
 
     try {
-      rootNavigator.startPrivateApp();
       await dispatch(actions.savePersonalInfo(data));
-      // rootNavigator.startPrivateApp();
-      // navigator.resetTo({
-      //   screen: 'plartApp.Intro',
-      //   title: 'Schedule',
-      //   label: 'Schedule',
-      //   animated: true,
-      //   animationType: 'fade',
-      //   navigatorStyle: {
-      //     navBarTextColor: '#fff800',
-      //     navBarTextFontSize: 18,
-      //     navBarBackgroundColor: '#3843e9',
-      //     navBarButtonColor: '#ffffff',
-      //     navBarNoBorder: true,
-      //   },
-      // });
-      // navigator.resetTo({ screen: 'plartApp.Home' });
+      await dispatch(actions.fetchCurrentUser());
+      setTimeout(() => {
+        rootNavigator.startPrivateApp();
+      }, 100);
     } catch (_) {
       const { errors } = this.props;
       setTimeout(() => {
@@ -94,81 +101,7 @@ class PersonalInfoScreen extends Component {
     }
   }
 
-  focusNextField(key) {
-    this.inputs[key].focus();
-  }
-
-  showImagePicker = () => {
-    if (Platform.OS === 'android' && Platform.Version >= 23) {
-      this.requestCameraPermission();
-    } else {
-      this.imagePicker();
-    }
-  }
-
-  alertErrorMsg = (errMessage) => {
-    Alert.alert(
-      'Error occurs',
-      errMessage,
-      [
-        { text: 'OK', onPress: () => { } },
-      ],
-      { cancelable: false },
-    );
-  }
-
-  async requestCameraPermission() {
-    try {
-      const granted = await PermissionsAndroid.requestMultiple(
-        [
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          PermissionsAndroid.PERMISSIONS.CAMERA,
-        ],
-        {
-          title: 'Camera and External Storage Permission',
-          message: 'Cool Photo App needs access to your camera so you can take awesome pictures.',
-        },
-      );
-      const result = Object.keys(granted).filter(permission => (
-        granted[permission] !== PermissionsAndroid.RESULTS.GRANTED
-      ));
-      if (!granted || result.length > 0) {
-        this.alertErrorMsg('You cannot upload image');
-        return;
-      }
-      this.imagePicker();
-    } catch (err) {
-      this.alertErrorMsg(err);
-    }
-  }
-
-  imagePicker = () => {
-    const options = Helpers.getDefaultImagePicker;
-    options.title = 'Seleccionar foto';
-
-    ImagePicker.showImagePicker(options, (response) => {
-      if (!response.didCancel && !response.error) {
-        const avatar = { uri: `data:${response.type};base64,${response.data}` };
-        this.setState({ avatar });
-        // import ImageResizer from 'react-native-image-resizer';
-        // var source_upload;
-        // if (Platform.OS === 'android') {
-        //     source_upload = {uri: response.uri, isStatic: true};
-        // } else {
-        //     source_upload = {uri: response.uri.replace('file://', ''), isStatic: true};
-        // }
-        // ImageResizer.createResizedImage(imageUri, newWidth, newHeight, compressFormat, quality, rotation, outputPath).then((resizedImageUri) => {
-        // ImageResizer.createResizedImage(response.uri, 200, 200, 'JPEG', 50).then((resizedImageUri) => {
-        //     compressedImageUri = resizedImageUri;
-        // }).catch((err) => {
-        //     return;
-        // });
-        // this.setState({ avatar: source_upload });
-      }
-    });
-  }
-
-  openDateDialog = () => {
+  openDatePicker = () => {
     this.inputs.birthday.open({
       date: this.state.birthday,
       minimumDate: new Date('1/1/1900'),
@@ -178,14 +111,10 @@ class PersonalInfoScreen extends Component {
 
   openGenderPicker = () => {
     this.inputs.gender.open({
-      value: this.state.gender,
+      value: this.state.gender.value,
       items: genderOptions,
     });
   };
-
-  openPickerDialog = () => {
-    this.inputs.gender.open(this.state.gender);
-  }
 
   render() {
     const { isFetching } = this.props;
@@ -194,13 +123,14 @@ class PersonalInfoScreen extends Component {
     return (
       <ScrollView
         contentContainerStyle={styles.contentContainer}
+        keyboardShouldPersistTaps="always"
       >
         <OverlayLoader visible={isFetching} />
         <View style={styles.avatarContainer}>
           <TouchableHighlight
             underlayColor="transparent"
             style={styles.avatarButton}
-            onPress={() => this.showImagePicker()}
+            onPress={() => this.onShowImagePicker()}
           >
             <View style={styles.center}>
               <Image
@@ -223,7 +153,7 @@ class PersonalInfoScreen extends Component {
               enablesReturnKeyAutomatically={this.enablesReturnKeyAutomatically}
               maxLength={250}
               onChangeText={text => this.onChange(text, 'first_name')}
-              onSubmitEditing={() => this.focusNextField('last_name')}
+              onSubmitEditing={() => this.onFocusNextField('last_name')}
               ref={input => this.inputs.first_name = input}
               returnKeyType="next"
             />
@@ -238,7 +168,7 @@ class PersonalInfoScreen extends Component {
               style={styles.textField}
               enablesReturnKeyAutomatically={this.enablesReturnKeyAutomatically}
               onChangeText={text => this.onChange(text, 'last_name')}
-              onSubmitEditing={() => this.focusNextField('document')}
+              onSubmitEditing={() => this.onFocusNextField('document')}
               ref={input => this.inputs.last_name = input}
               returnKeyType="next"
             />
@@ -256,7 +186,7 @@ class PersonalInfoScreen extends Component {
                   keyboardType="numeric"
                   maxLength={8}
                   onChangeText={text => this.onChange(text, 'document')}
-                  onSubmitEditing={() => this.focusNextField('phone')}
+                  onSubmitEditing={() => this.onFocusNextField('phone')}
                   placeholder="DNI"
                   ref={input => this.inputs.document = input}
                   returnKeyType="next"
@@ -285,7 +215,7 @@ class PersonalInfoScreen extends Component {
           <Text>Género*</Text>
           <TouchableHighlight
             underlayColor="transparent"
-            style={styles.textFieldBox}
+            style={[styles.textFieldBox, styles.buttonPickerStyle]}
             onPress={() => this.openGenderPicker()}
           >
             <Text style={styles.textField}>{gender.label}</Text>
@@ -300,8 +230,8 @@ class PersonalInfoScreen extends Component {
           <Text>Fecha de Nacimiento*</Text>
           <TouchableHighlight
             underlayColor="transparent"
-            style={styles.textFieldBox}
-            onPress={() => this.openDateDialog()}
+            style={[styles.textFieldBox, styles.buttonPickerStyle]}
+            onPress={() => this.openDatePicker()}
           >
             <Text style={styles.textField}>{birthdayText}</Text>
           </TouchableHighlight>
@@ -319,6 +249,7 @@ class PersonalInfoScreen extends Component {
 PersonalInfoScreen.propTypes = {
   dispatch: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
+  hasInternet: PropTypes.bool.isRequired,
 };
 
 export default connect(({ app, me }) => ({

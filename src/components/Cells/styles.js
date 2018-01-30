@@ -3,8 +3,7 @@ import Colors from './../../utils/Colors';
 
 const styles = StyleSheet.create({
   button: {
-    marginTop: 11,
-    marginHorizontal: 15,
+    marginBottom: 15,
   },
   rowContainer: {
     flex: 1,
@@ -17,14 +16,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingTop: 15,
-    marginLeft: 8,
   },
   cell_container: {
     flex: 1,
     backgroundColor: Colors.white,
     padding: 10,
     marginHorizontal: 15,
-    marginBottom: 5,
     borderRadius: 3,
   },
   columnText: {

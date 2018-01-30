@@ -10,11 +10,12 @@ import {
 import Moment from 'moment';
 import styles from './styles';
 
-const MyAdCeil = ({ item, onSelectItem }) => (
+const MyAdCeil = ({ item, index, onSelectItem }) => (
   <TouchableHighlight
-    style={styles.button}
+    style={[styles.button, (index === 0) ? { marginTop: 20 } : {}]}
     underlayColor='transparent'
-    onPress={onSelectItem}>
+    onPress={onSelectItem}
+  >
     <View style={styles.cell_container}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
         <Image
@@ -28,14 +29,16 @@ const MyAdCeil = ({ item, onSelectItem }) => (
         </View>
       </View>
       <View style={{ flexDirection: 'row' }}>
-        <Text>Postulantes:  </Text>
+        <Text>Postulantes: </Text>
         {
           item.users.length === 0 ? <Text>No hay postulantes.</Text> : item.users.map((user, i) => {
-            return <Image
-              key={i}
-              style={{ width: 22, height: 22, margin: 2 }}
-              source={user.photo ? { uri: user.photo.replace('http', 'https') } : require('./../../img/adDefaultImage.jpg')}
-            />
+            return (
+              <Image
+                key={i}
+                style={{ width: 22, height: 22, margin: 2 }}
+                source={user.photo ? { uri: user.photo.replace('http', 'https') } : require('./../../img/adDefaultImage.jpg')}
+              />
+            );
           })
         }
       </View>

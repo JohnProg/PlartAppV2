@@ -12,8 +12,13 @@ class PickerModal extends Component {
     };
   }
 
-  open = ({ value, items }) => {
-    this.setState({ value, items });
+  open = ({ items, value }) => {
+    let newValue;
+    if (value) {
+      newValue = items.find(item => (item.value || item.id) === value);
+      this.setState({ value: newValue });
+    }
+    this.setState({ items });
     this.showPickerModal();
   }
 
@@ -34,15 +39,16 @@ class PickerModal extends Component {
 
   render() {
     const { items, open, value } = this.state;
-    const { title } = this.props;
+    const { title, scrolled } = this.props;
     return (
       <SinglePickerMaterialDialog
         title={title}
-        items={items.map(row => ({ value: row.value, label: row.label }))}
+        items={items.map(row => ({ value: (row.value || row.id), label: (row.label || row.name) }))}
         visible={open}
         selectedItem={value}
         onCancel={() => this.handleCancel()}
         onOk={result => this.handleOk(result)}
+        scrolled={scrolled}
       />
     );
   }
@@ -51,10 +57,12 @@ class PickerModal extends Component {
 PickerModal.propTypes = {
   title: PropTypes.string,
   onValuePicked: PropTypes.func.isRequired,
+  scrolled: PropTypes.bool,
 };
 
 PickerModal.defaultProps = {
   title: '',
+  scrolled: false,
 };
 
 export default PickerModal;

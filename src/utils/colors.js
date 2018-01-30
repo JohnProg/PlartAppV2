@@ -1,13 +1,17 @@
 export default {
   purple: '#673AB7',
   purpleDark: '#4527A0',
-  black: '#212121',
+  black: '#000',
+  black2: '#333',
   white: '#FFF',
   blue: '#3F51B5',
   red: '#f44336',
   gray: '#ABABAB',
   iosBlue: '#007AFF',
   blackWithOpacity: 'rgba(43, 48, 62, 0.57)',
+  transparent: 'transparent',
   semiTransparent: 'rgba(80,94,104,0.7)',
   semiTransparent2: 'rgba(80,94,104,0)',
+  semiTransparent3: 'rgba(220, 213, 228, 0.54)',
+  semiTransparent4: 'rgba(0,0,0,.6)',
 };

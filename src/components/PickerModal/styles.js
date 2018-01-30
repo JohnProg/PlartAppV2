@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   buttonTextStyle: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 20,
     color: Colors.iosBlue,
   },
   containerTwoGrid: {
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   },
   containerItemTwoGrid: {
     flex: 0.4,
+    padding: 15,
   },
   pickerView: {
     marginTop: 9,

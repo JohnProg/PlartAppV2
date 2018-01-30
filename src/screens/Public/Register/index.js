@@ -26,6 +26,10 @@ class RegisterScreen extends Component {
     this.inputs = {};
   }
 
+  onFocusNextField(key) {
+    this.inputs[key].focus();
+  }
+
   register = async () => {
     const {
       email, username, password, device_key,
@@ -44,15 +48,11 @@ class RegisterScreen extends Component {
       }));
       navigator.resetTo({ screen: 'plartApp.Professions' });
     } catch (_) {
+      const { errors } = this.props;
       setTimeout(() => {
-        const { errors } = this.props;
-        Alert.alert('Error', errors);
+        Alert.alert('Error', Helpers.formatError(errors));
       }, 1000);
     }
-  }
-
-  focusNextField(key) {
-    this.inputs[key].focus();
   }
 
   render() {
@@ -74,7 +74,7 @@ class RegisterScreen extends Component {
             returnKeyType="next"
             enablesReturnKeyAutomatically={enablesReturnKeyAutomatically}
             autoCapitalize="none"
-            onSubmitEditing={() => this.focusNextField('email')}
+            onSubmitEditing={() => this.onFocusNextField('email')}
           />
           <TextInput
             ref={input => this.inputs.email = input}
@@ -89,7 +89,7 @@ class RegisterScreen extends Component {
             returnKeyType="next"
             enablesReturnKeyAutomatically={enablesReturnKeyAutomatically}
             autoCapitalize="none"
-            onSubmitEditing={() => this.focusNextField('password')}
+            onSubmitEditing={() => this.onFocusNextField('password')}
           />
           <TextInput
             ref={input => this.inputs.password = input}

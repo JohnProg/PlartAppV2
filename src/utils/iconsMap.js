@@ -36,6 +36,7 @@ const icons = {
   announcement: { icon: 'announcement', color: 'black', size: 24 },
   cardTravel: { icon: 'card-travel', color: 'black', size: 24 },
   notifications: { icon: 'notifications-none', color: 'white', size: 24 },
+  filters: { icon: 'tune', color: 'white', size: 24 },
   personOutline: { icon: 'person-outline', color: 'white', size: 24 },
   businessCenter: { icon: 'business-center', color: 'white', size: 24 },
   infoOutline: { icon: 'info-outline', color: 'white', size: 24 },

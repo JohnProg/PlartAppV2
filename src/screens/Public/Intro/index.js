@@ -19,11 +19,11 @@ const IntroScreen = ({ navigator }) => {
     });
   };
   return (
-    <View style={styles.mainContainer}>
-      <ScrollView contentContainerStyle={styles.introScreenScroll}>
+    <View style={styles.containerStyle}>
+      <ScrollView contentContainerStyle={styles.scrollContainerStyle}>
         <H1>Achambear</H1>
         <Icon name="md-people" size={200} color={Colors.white} />
-        <Button onPress={() => goTo('plartApp.Register', 'Crear cuenta')}>Registrarse</Button>
+        <Button style={styles.btnRegisterStyle} onPress={() => goTo('plartApp.Register', 'Crear cuenta')}>Registrarse</Button>
         <Button onPress={() => goTo('plartApp.Login', 'Iniciar Sesión')}>Iniciar sesión</Button>
       </ScrollView>
     </View>

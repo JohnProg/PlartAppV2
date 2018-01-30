@@ -58,6 +58,10 @@ MyAdDetailScreen.propTypes = {
   isFetching: PropTypes.bool.isRequired,
 };
 
+MyAdDetailScreen.navigatorStyle = {
+  tabBarHidden: true,
+};
+
 export default connect(({ app, ad }) => ({
   hasInternet: app.hasInternet,
   item: ad.item,

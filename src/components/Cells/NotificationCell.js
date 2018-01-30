@@ -1,14 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Text, TouchableHighlight, View } from 'react-native';
-
-// 3rd Party Libraries
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
 
-const NotificationCeil = ({ item, onSelectItem }) => (
+const NotificationCell = ({ item, onSelectItem }) => (
   <TouchableHighlight
     style={styles.button}
-    onPress={onSelectItem}>
+    onPress={onSelectItem}
+  >
     <View style={styles.rowContainer}>
       <View style={styles.columnIcon}>
         <Icon name="check" size={20} color={item.status ? '#333' : '#673AB7'} style={{ backgroundColor: 'transparent' }} />
@@ -18,12 +18,16 @@ const NotificationCeil = ({ item, onSelectItem }) => (
           {item.title}
         </Text>
         <Text style={[styles.rowDetailsLine, item.status ? null : styles.colorPurple]}>
-          {item.description || 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua....'}
+          {item.description}
         </Text>
       </View>
     </View>
   </TouchableHighlight>
 );
 
+NotificationCell.propTypes = {
+  onSelectItem: PropTypes.func.isRequired,
+  item: PropTypes.shape({}).isRequired,
+};
 
-export default NotificationCeil;
+export default NotificationCell;

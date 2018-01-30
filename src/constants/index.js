@@ -13,3 +13,7 @@ export const icons = {
   back: { icon: iOS ? 'chevron-left' : 'arrow-back', color: 'white', size: 24 },
   forward: iOS ? { icon: 'chevron-right', color: 'white', size: 40 } : { icon: 'arrow-forward', color: 'white', size: 24 },
 };
+export const genderOptions = [
+  { value: 'male', label: 'Masculino' },
+  { value: 'female', label: 'Femenino' },
+];

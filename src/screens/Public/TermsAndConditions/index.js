@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { Platform, View, WebView } from 'react-native';
 
 // Components
-import Header from './../../Components/Header';
 
-export default ({navigator}) =>
+ const TermsAndConditionsScreen = ({navigator}) => (
   <View style={{flex: 1, backgroundColor: 'white'}}>
     <WebView
       automaticallyAdjustContentInsets={false}
@@ -15,9 +14,8 @@ export default ({navigator}) =>
       startInLoadingState={true}
       style={{marginTop: Platform.OS === 'ios' ? 64 : 54}}
     />
-    <Header
-        title="Términos y Condiciones"
-        leftText = "OK"
-        rightText=" "
-        onLeftPress={ () => { navigator.pop(); } } />
   </View>
+);
+
+export default TermsAndConditionsScreen;
+
