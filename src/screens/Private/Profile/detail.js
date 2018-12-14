@@ -5,7 +5,9 @@ import { Alert, Dimensions, Image, Text, TouchableOpacity, View } from 'react-na
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ParallaxScroll from '@monterosa/react-native-parallax-scroll';
-import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
+import { List, ListItem as Item } from 'native-base';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
+import Timeline from './../../../components/TimeLine';
 import { PARALLAX_HEADER_HEIGHT } from './../../../constants';
 import * as actions from './../../../actions/meActions';
 import styles from './styles';
@@ -23,6 +25,9 @@ const window = Dimensions.get('window');
 class ProfileScreen extends Component {
   static navigatorStyle = {
     navBarHidden: true,
+  }
+  state = {
+    height: 0,
   }
 
   onShowImagePicker = () => {
@@ -48,6 +53,32 @@ class ProfileScreen extends Component {
       }
     });
   }
+
+  handleTabHeight = (obj) => {
+    // (this.bodys[obj.ref.props.tabLabel]._root || this.bodys[obj.ref.props.tabLabel]).measure((x, y, w, h) => {
+    //   if (h !== 0) {
+    //     this.setState({ height: h });
+    //   }
+    // });
+  }
+
+  bodys = {}
+
+  data = [
+    { id: 1, time: '09:00', title: 'Archery Training', description: 'The Beginner Archery and Beginner Crossbow course does not require you to bring any equipment, since everything you need will be provided for the course. ', circleColor: '#009688', lineColor: '#009688' },
+    { id: 2, time: '10:45', title: 'Play Badminton', description: 'Badminton is a racquet sport played using racquets to hit a shuttlecock across a net.' },
+    { id: 3, time: '12:00', title: 'Lunch' },
+    { id: 4, time: '14:00', title: 'Watch Soccer', description: 'Team sport played between two teams of eleven players with a spherical ball. ', lineColor: '#009688' },
+    { id: 5, time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688' },
+    { id: 6, time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688' },
+    { id: 7, time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688' },
+    { id: 8, time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688' },
+    { id: 9, time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688' },
+    { id: 10, time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688' },
+    { id: 11, time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688' },
+    { id: 12, time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688' },
+    { id: 13, time: '16:30', title: 'Go to Fitness center', description: 'Look out for the Best Gym & Fitness Centers around me :)', circleColor: '#009688' },
+  ]
 
   renderButtonProfile = () => (
     <TouchableOpacity
@@ -102,17 +133,69 @@ class ProfileScreen extends Component {
     return <Text>No tiene perfiles.</Text>;
   }
 
-  renderTab = (name, page, isTabActive, onPressHandler, onLayoutHandler) => (
-    <TouchableOpacity
-      key={`${name}_${page}`}
-      onPress={() => onPressHandler(page)}
-      onLayout={onLayoutHandler}
-      style={styles.btnTab}
-      underlayColor="#aaaaaa"
+  renderBasicInfo = currentUser => (
+    <View
+      ref={e => this.bodys.Perfil = e}
+      onLayout={({ nativeEvent: { layout: { height } } }) => {
+        this.setState({ height });
+      }}
     >
-      <Icon name={name} size={25} color={isTabActive ? '#000' : 'gray'} />
-    </TouchableOpacity>
-  );
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View>
+          <Text style={styles.textTitleDescription}>Correo electrónico: </Text>
+          <Text>{currentUser.email}</Text>
+        </View>
+        <View style={{ marginRight: 60, marginBottom: 20 }}>
+          <Text style={styles.textTitleDescription}>DNI:</Text>
+          <Text>{currentUser.document}</Text>
+        </View>
+      </View>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View>
+          <Text style={styles.textTitleDescription}>Teléfono:</Text>
+          <Text>{currentUser.phone}</Text>
+        </View>
+        <View style={{ marginRight: 60, marginBottom: 20 }}>
+          <Text style={styles.textTitleDescription}>Sexo:</Text>
+          <Text>{currentUser.gender && currentUser.gender.label}</Text>
+        </View>
+      </View>
+      <Text style={styles.textTitleDescription}>Fecha de Nacimiento:</Text>
+      <Text>{currentUser.birthday}</Text>
+      <Text style={[styles.textTitleDescription, { marginTop: 20 }]}>Perfiles:</Text>
+      {this.renderProfiles()}
+    </View>
+  )
+
+  renderExperienceListWork = () => (
+    <Timeline
+      style={styles.timeLineListContainerStyle}
+      data={this.data}
+      circleSize={20}
+      passRef={e => this.bodys.Experiencia = e}
+      updateHeight={height => this.setState({ height })}
+      scrollEnabled={false}
+      circleColor="rgb(45,156,219)"
+      lineColor="rgb(45,156,219)"
+      timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
+      timeStyle={{ textAlign: 'center', backgroundColor: '#ff9797', color: 'white', padding: 5, borderRadius: 13 }}
+      descriptionStyle={{ color: 'gray' }}
+      options={{
+        style: { paddingTop: 5 },
+      }}
+    />
+  )
+
+  renderComments = () => (
+    <List
+      ref={e => this.bodys.Comentarios = e}
+      onLayout={({ nativeEvent: { layout: { height } } }) => {
+        this.setState({ height });
+      }}
+    >
+      {new Array(40).fill(null).map((_, i) => <Item key={i}><Text>No hay historial de trabajo {i}</Text></Item>)}
+    </List>
+  )
 
   render() {
     const { currentUser, isFetching, isUploadingCover } = this.props;
@@ -134,7 +217,10 @@ class ProfileScreen extends Component {
               source={currentUser.photo_front ? { uri: currentUser.photo_front.replace('http', 'https') } : defaultImage}
               style={{ width: window.width, height: PARALLAX_HEADER_HEIGHT }}
             />
-            <View style={[styles.coverView, { backgroundColor: isUploadingCover ? 'rgba(0,0,0,.7)' : 'rgba(0,0,0,.4)' }]}>
+            <View style={[
+              styles.coverView,
+              { backgroundColor: isUploadingCover ? 'rgba(0,0,0,.7)' : 'rgba(0,0,0,.4)' }
+            ]}>
               {
                 !isUploadingCover ? null : (
                   <Text style={styles.uploadingCoverText}>Subiendo foto de portada...</Text>
@@ -147,46 +233,20 @@ class ProfileScreen extends Component {
         parallaxForegroundScrollSpeed={2.5}
       >
         <ScrollableTabView
-          style={styles.scrollableTabViewStyle}
-          renderTabBar={() => (
-            <ScrollableTabBar
-              activeTab={0}
-              underlineStyle={styles.underlineStyle}
-              renderTab={this.renderTab}
-            />
-          )}
+          style={[
+            styles.scrollableTabViewStyle,
+            // { height: this.state.height },
+          ]}
+          onChangeTab={obj => this.handleTabHeight(obj)}
         >
-          <View style={styles.mainSection} tabLabel="person" key="person">
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <View>
-                <Text style={styles.textTitleDescription}>Correo electrónico: </Text>
-                <Text>{currentUser.email}</Text>
-              </View>
-              <View style={{ marginRight: 60, marginBottom: 20 }}>
-                <Text style={styles.textTitleDescription}>DNI:</Text>
-                <Text>{currentUser.document}</Text>
-              </View>
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <View>
-                <Text style={styles.textTitleDescription}>Teléfono:</Text>
-                <Text>{currentUser.phone}</Text>
-              </View>
-              <View style={{ marginRight: 60, marginBottom: 20 }}>
-                <Text style={styles.textTitleDescription}>Sexo:</Text>
-                <Text>{currentUser.gender && currentUser.gender.label}</Text>
-              </View>
-            </View>
-            <Text style={styles.textTitleDescription}>Fecha de Nacimiento:</Text>
-            <Text>{currentUser.birthday}</Text>
-            <Text style={[styles.textTitleDescription, { marginTop: 20 }]}>Perfiles:</Text>
-            {this.renderProfiles()}
+          <View style={styles.mainSection} tabLabel="Perfil" key="person">
+            {this.renderBasicInfo(currentUser)}
           </View>
-          <View style={styles.emptyTabContentStyle} tabLabel="business-center" key="business-center">
-            <Text >No hay historial de trabajo</Text>
+          <View style={styles.emptyTabContentStyle} tabLabel="Experiencia" key="business-center">
+            {this.renderExperienceListWork()}
           </View>
-          <View style={styles.emptyTabContentStyle} tabLabel="comment" key="comment">
-            <Text >No hay comentarios</Text>
+          <View style={styles.emptyTabContentStyle} tabLabel="Comentarios" key="comment">
+            {this.renderComments()}
           </View>
         </ScrollableTabView>
       </ParallaxScroll>

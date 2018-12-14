@@ -127,8 +127,10 @@ class CreateAdScreen extends Component {
         });
       }, 100);
     } catch (_) {
-      const { errors } = this.props;
-      Alert.alert('Error', Helpers.formatError(errors));
+      setTimeout(() => {
+        const { errors } = this.props;
+        Alert.alert('Error', Helpers.formatError(errors));
+      }, 10);
     }
   }
 

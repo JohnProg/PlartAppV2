@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingLeft: 10,
     color: Colors.black,
-    paddingVertical: Platform.OS === 'ios' ? 13.5 : 8,
+    paddingVertical: Platform.OS === 'ios' ? 12.3 : 8,
   },
   descriptionTextField: {
     minHeight: 44,

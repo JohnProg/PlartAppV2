@@ -44,14 +44,13 @@ const styles = StyleSheet.create({
   },
   scrollableTabViewStyle: {
     backgroundColor: Colors.white,
+    zIndex: 10,
   },
   underlineStyle: {
     backgroundColor: Colors.purple,
   },
   emptyTabContentStyle: {
     flex: 1,
-    alignItems: 'center',
-    marginTop: 50,
   },
   textTitleDescription: {
     marginTop: 10,
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
   textField: {
     fontSize: 16,
     paddingLeft: 10,
-    paddingVertical: Platform.OS === 'ios' ? 13.5 : 8,
+    paddingVertical: Platform.OS === 'ios' ? 12.3 : 8,
     color: Colors.black,
   },
   descriptionTextField: {
@@ -137,6 +136,10 @@ const styles = StyleSheet.create({
   },
   textButtonPickerStyle: {
     paddingVertical: 0,
+  },
+  timeLineListContainerStyle: {
+    flex: 1,
+    padding: 20,
   },
 });
 

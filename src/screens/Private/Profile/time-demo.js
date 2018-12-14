@@ -1,0 +1,234 @@
+import React, { Component } from 'react';
+
+import {
+  StyleSheet,
+  ListView,
+  Image,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
+
+import _ from 'lodash'
+
+let defaultCircleSize = 16
+let defaultCircleColor = '#007AFF'
+let defaultLineWidth = 2
+let defaultLineColor = '#007AFF'
+let defaultTimeTextColor = 'black'
+let defaultDotColor = 'white'
+let defaultInnerCircle = 'none'
+
+export default class Timeline extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.isRenderSeparator = this.props.separator != null ? this.props.separator : true;
+    this.onEventPress = this.props.onEventPress;
+
+    this.state = {
+      data: this.props.data,
+      x: 0,
+      width: 0
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      data: nextProps.data,
+    });
+  }
+
+  render() {
+    return (
+      <View style={[styles.container, this.props.style]}>
+        {
+          this.state.data.map(item => (
+              <View key={item.id} style={[styles.rowContainer, this.props.rowContainerStyle]}>
+                {this.renderTime(item)}
+                {this.renderEvent(item)}
+                {this.renderCircle(item)}
+              </View>
+          ))
+        }
+      </View>
+    );
+  }
+
+  renderTime = (item) => {
+    return (
+      <View style={{ alignItems: 'flex-end' }}>
+        <View style={[styles.timeContainer, this.props.timeContainerStyle]}>
+          <Text style={[styles.time, this.props.timeStyle]}>{item.time}</Text>
+        </View>
+      </View>
+    );
+  }
+
+  renderEvent = (item) => {
+    let lineWidth = item.lineWidth ? item.lineWidth : this.props.lineWidth
+    let isLast = this.props.renderFullLine ? !this.props.renderFullLine : this.state.data.slice(-1)[0] === item
+    let lineColor = isLast ? ('rgba(0,0,0,0)') : (item.lineColor ? item.lineColor : this.props.lineColor)
+    var opStyle = {
+      borderColor: lineColor,
+      borderLeftWidth: lineWidth,
+      borderRightWidth: 0,
+      marginLeft: 20,
+      paddingLeft: 20,
+    };
+
+    return (
+      <View style={[styles.details, opStyle]} onLayout={(evt) => { if (!this.state.x && !this.state.width) { var { x, width } = evt.nativeEvent.layout; this.setState({ x, width }) } }}>
+        <TouchableOpacity disabled={this.props.onEventPress == null}
+          style={[this.props.detailContainerStyle]}
+
+          onPress={() => this.props.onEventPress ? this.props.onEventPress(item) : null}
+        >
+          <View style={{ paddingTop: 10, paddingBottom: 10 }}>
+            {this.renderDetail(item)}
+          </View>
+          {this.renderSeparator()}
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  renderDetail = (item) => {
+    let title = <Text style={[styles.title, this.props.titleStyle]}>{item.title}</Text>
+    if (item.description)
+      title = (
+        <View>
+          <Text style={[styles.title, this.props.titleStyle]}>{item.title}</Text>
+          <Text style={[styles.description, this.props.descriptionStyle]}>{item.description}</Text>
+        </View>
+      );
+    return (
+      <View style={styles.container}>
+        {title}
+      </View>
+    );
+  }
+
+  renderCircle = (rowData) => {
+    var circleSize = rowData.circleSize ? rowData.circleSize : this.props.circleSize ? this.props.circleSize : defaultCircleSize
+    var circleColor = rowData.circleColor ? rowData.circleColor : this.props.circleColor ? this.props.circleColor : defaultCircleColor
+    var lineWidth = rowData.lineWidth ? rowData.lineWidth : this.props.lineWidth ? this.props.lineWidth : defaultLineWidth
+
+    var circleStyle = {
+      width: this.state.x ? circleSize : 0,
+      height: this.state.x ? circleSize : 0,
+      borderRadius: circleSize / 2,
+      backgroundColor: circleColor,
+      left: this.state.x - (circleSize / 2) + ((lineWidth - 1) / 2),
+    };
+
+    var innerCircle = null
+    switch (this.props.innerCircle) {
+      case 'icon':
+        let iconSource = rowData.icon ? rowData.icon : this.props.icon
+        let iconStyle = {
+          height: circleSize,
+          width: circleSize,
+        }
+        innerCircle = (<Image source={iconSource} style={[iconStyle, this.props.iconStyle]} />)
+        break;
+      case 'dot':
+        let dotStyle = {
+          height: circleSize / 2,
+          width: circleSize / 2,
+          borderRadius: circleSize / 4,
+          backgroundColor: rowData.dotColor ? rowData.dotColor : this.props.dotColor ? this.props.dotColor : defaultDotColor
+        }
+        innerCircle = (<View style={[styles.dot, dotStyle]} />)
+        break;
+    }
+    return (
+      <View style={[styles.circle, circleStyle, this.props.circleStyle]}>
+        {innerCircle}
+      </View>
+    )
+  }
+
+  renderSeparator = () => {
+    if (this.isRenderSeparator)
+      return (
+        <View style={[styles.separator, this.props.separatorStyle]}></View>
+      )
+    else
+      return null;
+  }
+}
+
+Timeline.defaultProps = {
+  circleSize: defaultCircleSize,
+  circleColor: defaultCircleColor,
+  lineWidth: defaultLineWidth,
+  lineColor: defaultLineColor,
+  innerCircle: defaultInnerCircle,
+  columnFormat: 'single-column-left',
+};
+
+let styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  listview: {
+    flex: 1,
+  },
+  sectionHeader: {
+    marginBottom: 15,
+    backgroundColor: '#007AFF',
+    height: 30,
+    justifyContent: 'center'
+  },
+  sectionHeaderText: {
+    color: '#FFF',
+    fontSize: 18,
+    alignSelf: 'center',
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    //alignItems: 'stretch',
+    justifyContent: 'center',
+  },
+  timeContainer: {
+    minWidth: 45
+  },
+  time: {
+    textAlign: 'right',
+    color: defaultTimeTextColor,
+  },
+  circle: {
+    width: 16,
+    height: 16,
+    borderRadius: 10,
+    position: 'absolute',
+    left: -8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: defaultDotColor,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  details: {
+    borderLeftWidth: defaultLineWidth,
+    flexDirection: 'column',
+    flex: 1,
+  },
+  description: {
+    marginTop: 10,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#aaa',
+    marginTop: 10,
+    marginBottom: 10
+  }
+});
