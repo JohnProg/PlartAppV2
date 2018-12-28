@@ -1,5 +1,5 @@
 # PlartAppV2
-Plart App using React Native with Redux v2
+Plart App using React Native with Redux
 
 ## Landing Page
 https://johnprog.github.io/plartApp-landing-page/
